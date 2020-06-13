@@ -18,8 +18,8 @@ Stage({
   image : { src : "./example.png", ratio : 4 },
   trim : 0.2,
   textures : {
-    "tile-1" :   { x : 0*16, y : 0,  width : 16, height : 16 },
-    "tile-2" :  { x : 1*16, y : 0,  width : 16, height : 16 },
+    "tile-1" :  { x : 1*16, y : 0,  width : 16, height : 16 },
+    "tile-2" :   { x : 0*16, y : 0,  width : 16, height : 16 },
     
     dark :   { x : 0*16, y : 0,  width : 16, height : 16 },
     light :  { x : 1*16, y : 0,  width : 16, height : 16 },
