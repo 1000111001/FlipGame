@@ -16,15 +16,15 @@ function Game(stage, width, height) {
   });
 
   var game = this;
-  Stage.image('easy').appendTo(this.board).pin({
-    alignX : 1,
-    alignY : 1,
-    handleY : 0,
-    offsetX : -2,
-    offsetY : 0.5
-  }).on(Mouse.CLICK, function() {
-    game.start();
-  });
+  // Stage.image('easy').appendTo(this.board).pin({
+  //   alignX : 1,
+  //   alignY : 1,
+  //   handleY : 0,
+  //   offsetX : -2,
+  //   offsetY : 0.5
+  // }).on(Mouse.CLICK, function() {
+  //   game.start();
+  // });
 
   Stage.image('hard').appendTo(this.board).pin({
     alignX : 1,
