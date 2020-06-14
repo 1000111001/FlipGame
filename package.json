@@ -13,32 +13,11 @@
       "type": "http",
       "url": "https://github.com/1000111001/black-white.git"
     },
-    "main": "lib/index.js",
+    "main": "app/black-white.js",
     "files": [
     ],
-    "devDependencies": {
-      "browserify": "^8.1.3",
-      "browserify-middleware": "^7.0.0",
-      "expect.js": "*",
-      "express": "^4.13.4",
-      "gulp": "*",
-      "gulp-browserify": "*",
-      "gulp-bump": "*",
-      "gulp-concat": "*",
-      "gulp-header": "^1.7.1",
-      "gulp-mocha": "*",
-      "gulp-rename": "^1.2.0",
-      "gulp-uglify": "*",
-      "gulp-util": "^3.0.5",
-      "gulp-wrap": "*",
-      "minimist": "*",
-      "sandboxed-module": "^2.0.0",
-      "serve-index": "^1.7.3",
-      "sinon": "*",
-      "uglifyify": "^3.0.1",
-      "vinyl-buffer": "^1.0.0",
-      "vinyl-source-stream": "^1.0.0",
-      "vinyl-transform": "^1.0.0"
+    "dependencies":{
+      "express": "^4.13.4"
     },
     "scripts": {
       "dev": "node server.js"
