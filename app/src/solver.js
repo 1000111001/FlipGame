@@ -8,7 +8,7 @@ function swap(a, b) {
     b = t;
 }
 
-Solver.prototype.gauss = function(a, n, rows, cols) {
+Solver.prototype.gauss = function(a, rows, cols) {
     var r = 0, c = 0;
     for (; r < rows && c < cols; ++r, ++c) {
         // 搜索主元
@@ -26,34 +26,64 @@ Solver.prototype.gauss = function(a, n, rows, cols) {
         }
         // I型初等行变换
         if (tr != r) {
-            for (var k = 0; k < n; ++k) swap(a[r][k], a[tr][k]);
+            for (var k = 0; k < cols; ++k) swap(a[r][k], a[tr][k]);
         }
         // 消元
         for (var ir = r + 1; ir < rows; ++ir) {
             if (a[ir][c]) {
-                for (var ic = c; ic < n; ++ic) {
+                for (var ic = c; ic < cols; ++ic) {
                     a[ir][ic] ^= a[r][ic];
                 }
             }
         }
     }
-
     // 反向回代
+    var equations = rows;
+    var x = new Array(equations);
     for (var ir = rows - 1; ir >= 0; --ir) {
-
+        x[ir] = a[ir][cols];
+        for (var ic = ir + 1; ic < equations; ++ic) {
+            if (a[ir][ic]) x[ir] ^= x[ic];
+        }
     }
-
-    return n - r;
+    return x;
 }
 
-Solver.prototype.solve = function (rows, cols, b) {
+/* samples of augmented matrix
+  1   1   1   0 | x11
+  1   1   0   1 | x12
+  1   0   1   1 | x21
+  0   1   1   1 | x22
+
+  1   1   0   1   0   0   0   0   0 | x11
+  1   1   1   0   1   0   0   0   0 | x12
+  0   1   1   0   0   1   0   0   0 | x13
+  1   0   0   1   1   0   1   0   0 | x21
+  0   1   0   1   1   1   0   1   0 | x22
+  0   0   1   0   1   1   0   0   1 | x23
+  0   0   0   1   0   0   1   1   0 | x31
+  0   0   0   0   1   0   1   1   1 | x32
+  0   0   0   0   0   1   0   1   1 | x33
+*/
+
+Solver.prototype.solve = function (n, b) {
     // 构造增广矩阵
-    var a = [];
+    var rows = n * n;
+    var cols = rows + 1;
+    var a = new Array(rows);
     for (var r = 0; r < rows; ++r) {
-        for (var c = 0; c < cols + 1; ++c) {
-            
-        }
-        a[r][cols] = b[r];
+        a[r] = new Array(cols).fill(0);
+        a[r][r] = 1;
+        var i = Math.floor(r / n), j = r % n;
+        if (i > 0) a[r][r - n] = 1;     // (i - 1) * n + j
+        if (i < n - 1) a[r][r + n] = 1; // (i + 1) * n + j
+        if (j > 0) a[r][r - 1] = 1;     // i * n + (j - 1)
+        if (j < n - 1) a[r][r + 1] = 1; // i * n + (j + 1)
+        a[r][cols - 1] = b[r];
     }
-    var result = this.gauss(a, rows, rows, cols + 1);
+    for (var r = 0; r < rows; ++r) {
+        console.log(a[r].join(","));
+    }
+    var result = this.gauss(a, rows, cols);
+    console.log(result);
 }
