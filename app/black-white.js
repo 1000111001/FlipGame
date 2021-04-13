@@ -50,4 +50,10 @@ Stage(function(stage) {
 
     game.start();
 
+    var solver = new Solver();
+    var n = 6;
+    var b = new Array(n * n);
+    b.fill(1) ;
+    solver.solve(n, b);
+
 });

@@ -2,18 +2,12 @@ function Solver() {
 
 }
 
-function swap(a, b) {
-    var t = a;
-    a = b;
-    b = t;
-}
-
 Solver.prototype.gauss = function(a, rows, cols) {
     var r = 0, c = 0;
     for (; r < rows && c < cols; ++r, ++c) {
         // 搜索主元
         var tr = r;
-        for (var ir = r + 1; ir < rows; ++ir) {
+        for (var ir = r; ir < rows; ++ir) {
             if (a[ir][c]) {
                 tr = ir;
                 break;
@@ -26,7 +20,8 @@ Solver.prototype.gauss = function(a, rows, cols) {
         }
         // I型初等行变换
         if (tr != r) {
-            for (var k = 0; k < cols; ++k) swap(a[r][k], a[tr][k]);
+            // for (var k = 0; k < cols; ++k) swap(a[r][k], a[tr][k]);
+            [a[r], a[tr]] = [a[tr], a[r]];
         }
         // 消元
         for (var ir = r + 1; ir < rows; ++ir) {
@@ -37,11 +32,14 @@ Solver.prototype.gauss = function(a, rows, cols) {
             }
         }
     }
+    for (var r = 0; r < rows; ++r) {
+        console.log(a[r].join(","));
+    }
     // 反向回代
     var equations = rows;
     var x = new Array(equations);
     for (var ir = rows - 1; ir >= 0; --ir) {
-        x[ir] = a[ir][cols];
+        x[ir] = a[ir][cols - 1];
         for (var ic = ir + 1; ic < equations; ++ic) {
             if (a[ir][ic]) x[ir] ^= x[ic];
         }
@@ -84,6 +82,10 @@ Solver.prototype.solve = function (n, b) {
     for (var r = 0; r < rows; ++r) {
         console.log(a[r].join(","));
     }
+    console.log("");
     var result = this.gauss(a, rows, cols);
-    console.log(result);
+    for (var i = 0; i < result.length; i += n) {
+        var rr = result.slice(i, i + n);
+        console.log(rr.join(","));
+    }
 }
