@@ -1,5 +1,5 @@
-# black-white
-黑白迭代  https://1000111001.github.io/games/black-white
+# FlipGame
+黑白迭代  https://1000111001.github.io/games/FlipGame
 
 # How to
 1. npm install
