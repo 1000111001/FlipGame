@@ -15,7 +15,7 @@ function Game(stage, width, height) {
         alignY: 1,
         handleY: 0,
         offsetX: 0.1,
-        offsetY: 0.5
+        offsetY: 0.0
     }).on(Mouse.CLICK, function() {
         game.start();
     });
@@ -25,11 +25,16 @@ function Game(stage, width, height) {
         alignY: 1,
         handleY: 0,
         offsetX: -2,
-        offsetY: 1,
+        offsetY: 0.5,
         scale : 0.15,
     }).on(Mouse.CLICK, function() {
         game.hintClick();
     });
+    
+    var tips = 'click grids to set puzzle';
+    Stage.string('example:alpha').value(tips)
+        .pin({alignY: 0.5, offsetX:0, offsetY: 9, scale : 0.12, })
+        .appendTo(this.leftBoard.obj);
 
     this.start = function() {
         this.leftBoard.initTiles();
