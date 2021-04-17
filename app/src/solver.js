@@ -32,8 +32,10 @@ Solver.prototype.gauss = function(a, rows, cols) {
             }
         }
     }
-    for (var r = 0; r < rows; ++r) {
-        console.log(a[r].join(","));
+    if (DEBUG) {
+        for (var r = 0; r < rows; ++r) {
+            console.log(a[r].join(","));
+        }
     }
     // 反向回代
     var equations = rows;
@@ -79,13 +81,16 @@ Solver.prototype.solve = function (n, b) {
         if (j < n - 1) a[r][r + 1] = 1; // i * n + (j + 1)
         a[r][cols - 1] = b[r];
     }
-    for (var r = 0; r < rows; ++r) {
-        console.log(a[r].join(","));
+    if (DEBUG) {
+        for (var r = 0; r < rows; ++r) {
+            console.log(a[r].join(","));
+        }
+        console.log("");
     }
-    console.log("");
     var result = this.gauss(a, rows, cols);
     for (var i = 0; i < result.length; i += n) {
         var rr = result.slice(i, i + n);
         console.log(rr.join(","));
     }
+    return result;
 }

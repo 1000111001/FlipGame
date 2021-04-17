@@ -45,7 +45,10 @@ Stage({
       '9' : { x : 9*8,  y : 20, width : 8,  height : 8 },
     },
 
+    hint : { x : 80, y : 20, width : 20, height : 10},
+
     box :      { x : 0,    y : 32, width : 16, height : 16, top : 4, bottom : 4, left : 4, right : 4},
-    circle :   { x : 16,   y : 32, width : 16, height : 16}
+    circle :   { x : 16,   y : 32, width : 16, height : 16},
+    highLight : { x : 2*16, y : 32, width : 16, height : 16}
   }
 });

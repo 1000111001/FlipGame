@@ -1,6 +1,8 @@
 var Math = Stage.Math,
     Mouse = Stage.Mouse;
 
+DEBUG = false;
+
 function Game(stage, width, height) {
 
     this.leftBoard = new Board(stage, width, height, -8, 0);
@@ -16,6 +18,17 @@ function Game(stage, width, height) {
         offsetY: 0.5
     }).on(Mouse.CLICK, function() {
         game.start();
+    });
+
+    Stage.image('example:hint').appendTo(this.rightBoard.obj).pin({
+        alignX: 1,
+        alignY: 1,
+        handleY: 0,
+        offsetX: -2,
+        offsetY: 1,
+        scale : 0.15,
+    }).on(Mouse.CLICK, function() {
+        game.hintClick();
     });
 
     this.start = function() {
@@ -36,6 +49,20 @@ function Game(stage, width, height) {
     this.setPazzleClick = function(tile) {
         tile.toggle();
     }
+
+    this.hintClick = function() {
+        var solver = new Solver();
+        var n = 8;
+        var b = new Array(n * n);
+        b.fill(0);
+        for (var i = 0; i< this.leftBoard.tiles.length; ++i) {
+            b[i] = this.leftBoard.tiles[i].color == 2 ? 1 : 0;
+        }
+        var result = solver.solve(n, b);
+        for (var i = 0; i < result.length; ++i) {
+            this.rightBoard.tiles[i].setHighLight(result[i] == 1);
+        }
+    }
 }
 
 Stage(function(stage) {
@@ -49,11 +76,4 @@ Stage(function(stage) {
     var game = new Game(stage, width, height);
 
     game.start();
-
-    var solver = new Solver();
-    var n = 6;
-    var b = new Array(n * n);
-    b.fill(1) ;
-    solver.solve(n, b);
-
 });

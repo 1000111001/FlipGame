@@ -3,17 +3,19 @@ function Tile(board, color, i, j) {
     this.color = color;
     this.i = i;
     this.j = j;
+    this.highLight = null;
 }
 
 Tile.prototype.init = function(board) {
     var tile = this;
     var img = Stage.image(this.getImage()).pin({
-        handle: 0.5,
-        scale: 0.12
+        // handle: 0.5,
+        // scale: 0.12,
     }).on(Mouse.CLICK, function(point) {
         tile.click(tile);
+        tile.setHighLight(false);
     });
-    img.appendTo(board).offset(tile.i * 2 + 1, tile.j * 2 + 1);
+    img.appendTo(board);
     this.img = img;
 };
 
@@ -27,6 +29,16 @@ Tile.prototype.toggle = function() {
     this.updateView();
 };
 
+Tile.prototype.setHighLight = function(active) {
+    if (active) {
+        !this.highLight && (this.highLight = Stage.image("example:highLight").appendTo(this.img).scale(1.1).pin({"align":0.5}));
+    }
+    else if (this.highLight) {
+        this.img.remove(this.highLight);
+        this.highLight = null;
+    }
+}
+
 Tile.prototype.updateView = function() {
     this.img.image(this.getImage());
 };
@@ -36,21 +48,18 @@ Tile.prototype.getImage = function() {
 }
 
 function Board(stage, width, height, x, y) {
-    this.obj = Stage.create().appendTo(stage).pin({
-        width: width * 2,
-        height: height * 2,
+    this.obj = Stage.image('example:blue').appendTo(stage).pin({
         offsetX: x,
         offsetY: y,
-        scaleX: 0.8,
-        scaleY: 0.8,
-        align: 0.5
+        scale: 1,
+        align: 0.5,
     });
-    Stage.image('example:blue').appendTo(this.obj).pin({
-        alignX: 0.5,
-        alignY: 0.5,
+    this.board = Stage.create().appendTo(this.obj).pin({
+        width: this.obj.pin("width"),
+        height: this.obj.pin("height"),
+        align: 0.5,
         handleY: 0.5,
-        scaleX: 1.05 * width / 8,
-        scaleY: 1.05 * height / 8,
+        scale : 0.96,
     });
     this.width = width;
     this.height = height;
@@ -86,16 +95,28 @@ Board.prototype.setTile = function(i, j, tile) {
     this.tiles.push(tile);
 }
 
+Board.prototype.setHighLight = function(i, j, highLight) {
+    var tile = this.tilesMap[i + ":" + j];
+    tile && tile.setHighLight(highLight);
+}
+
 Board.prototype.initTiles = function() {
     for (var i = this.tiles.length - 1; i >= 0; --i) {
         this.tiles[i].img.remove();
     }
     this.tiles = [];
     this.tilesMap = {};
-    for (var i = 0; i < this.width; i++) {
-        for (var j = 0; j < this.height; j++) {
+    var spacing = 0.1;
+    var scale = 1 / (this.width + (this.width - 1) * spacing);
+    for (var i = 0; i < this.height; i++) {
+        for (var j = 0; j < this.width; j++) {
             var tile = new Tile(this, 1, i, j);
-            tile.init(this.obj);
+            tile.init(this.board);
+            tile.img.scale(scale);
+            var tw = tile.img.pin("width");
+            var x = scale * ((1 + spacing) * tw * tile.i);
+            var y = scale * ((1 + spacing) * tw * tile.j);
+            tile.img.offset(x, y);
             this.setTile(i, j, tile);
         }
     }
