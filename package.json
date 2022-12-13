@@ -17,7 +17,7 @@
     "files": [
     ],
     "dependencies":{
-      "express": "^4.13.4"
+      "express": "^4.17.3"
     },
     "scripts": {
       "dev": "node server.js"
